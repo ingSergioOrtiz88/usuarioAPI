@@ -49,7 +49,7 @@ public class User implements Serializable {
     private boolean isactive;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Phone> phones;
 
 }

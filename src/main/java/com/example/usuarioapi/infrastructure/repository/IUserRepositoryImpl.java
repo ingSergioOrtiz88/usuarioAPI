@@ -25,7 +25,7 @@ public class IUserRepositoryImpl implements IUserRepository {
     private final ModelMapper modelMapper;
 
 
-    private final com.example.usuarioapi.infrastructure.repository.IUserRepository repository;
+    private final IUsuarioRepository repository;
 
     @Override
     public List<UserDTO> findAll() {
