@@ -1,13 +1,12 @@
 package com.example.usuarioapi.application.service.impl;
 
+
 import com.example.usuarioapi.application.service.IUsuarioService;
 import com.example.usuarioapi.domain.model.dto.UserDTO;
 import com.example.usuarioapi.domain.model.repositories.IUserRepository;
-import com.example.usuarioapi.domain.model.repositories.PhoneRepository;
 import com.example.usuarioapi.infrastructure.exceptions.GeneralException;
 import com.example.usuarioapi.utils.Validation;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,11 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-@Slf4j
+
 @RequiredArgsConstructor
 public class UsuarioService implements IUsuarioService {
 
 
-    @Autowired
-    private PhoneRepository phoneRepository;
     @Autowired
     private IUserRepository iUserRepository;
 
@@ -32,7 +29,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public List<UserDTO> consultarUsuarios() {
-        log.info("Se consultan todos");
+        //log.info("Se consultan todos");
         return iUserRepository.findAll();
     }
 
@@ -42,17 +39,17 @@ public class UsuarioService implements IUsuarioService {
 
 
         if (userDTO.getName() == null) {
-            log.error("El nombre es obligatorio");
+            //       log.error("El nombre es obligatorio");
             throw new GeneralException("El nombre es obligatorio");
 
         }
         if (!Validation.validateEmail(userDTO.getEmail())) {
-            log.error("Digite un correo valido");
+            //log.error("Digite un correo valido");
             throw new GeneralException("Digite un correo valido");
 
         }
-/*        if (!Validation.isValidPassword(userDTO.getPassword(), env.getProperty("password.regex"))) {
-            log.error("Digite contraseña valida");
+        if (!Validation.isValidPassword(userDTO.getPassword(), env.getProperty("password.regex"))) {
+            // log.error("Digite contraseña valida");
             throw new GeneralException("Error Validando contraseña, debe tener: Mínimo 6 caracteres: " +
                     "Al menos un carácter alfanumérico (letra o número). " +
                     "Al menos un carácter especial (como $, @, !, %, *, ? o &).");
@@ -60,7 +57,6 @@ public class UsuarioService implements IUsuarioService {
         }
 
 
- */
         userDTO.getPhones().forEach(x -> {
 
             UUID idPhone = UUID.randomUUID();
@@ -68,7 +64,7 @@ public class UsuarioService implements IUsuarioService {
         });
 
         userDTO = iUserRepository.saveUser(userDTO);
-        log.info("Se guarda exitoso el usuario");
+        //log.info("Se guarda exitoso el usuario");
         return userDTO;
     }
 
@@ -83,7 +79,7 @@ public class UsuarioService implements IUsuarioService {
             throw new GeneralException("Digite un correo valido");
 
         }
-        log.info("Se actualiza");
+        //log.info("Se actualiza");
         return iUserRepository.updateUser(userDTO);
     }
 

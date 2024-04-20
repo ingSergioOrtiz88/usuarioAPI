@@ -6,7 +6,6 @@ import com.example.usuarioapi.domain.model.repositories.IUserRepository;
 import com.example.usuarioapi.infrastructure.exceptions.DataAlreadyExistsException;
 import com.example.usuarioapi.infrastructure.exceptions.GeneralException;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +17,6 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-@Slf4j
 public class IUserRepositoryImpl implements IUserRepository {
 
 
@@ -37,7 +35,7 @@ public class IUserRepositoryImpl implements IUserRepository {
             modelMapper.map(x, userDTO);
             listUserDto.add(userDTO);
         });
-        log.info("Se consultan todos exitosamente");
+        //log.info("Se consultan todos exitosamente");
 
         return listUserDto;
     }
@@ -62,7 +60,7 @@ public class IUserRepositoryImpl implements IUserRepository {
             throw new DataAlreadyExistsException("El correo electrónico ya está registrado.");
 
         }
-        log.info("Se Guarda exitosamente");
+        //log.info("Se Guarda exitosamente");
         return userDTO;
 
 
@@ -81,7 +79,7 @@ public class IUserRepositoryImpl implements IUserRepository {
         }
         modelMapper.map(usuario, userDTO);
 
-        log.info("Se Actualiza exitosamente");
+        //log.info("Se Actualiza exitosamente");
         return userDTO;
     }
 
@@ -96,10 +94,10 @@ public class IUserRepositoryImpl implements IUserRepository {
             usuario.setModified(LocalDateTime.now());
             repository.save(usuario);
             modelMapper.map(usuario, userDTO);
-            log.info("Se cambia de estado exitosamente");
+            //log.info("Se cambia de estado exitosamente");
             return userDTO;
         } else {
-            log.error("Error Cambiando el estado");
+            //log.error("Error Cambiando el estado");
             throw new GeneralException("el usuario no existe, por favor primero guarde el usuario");
         }
 

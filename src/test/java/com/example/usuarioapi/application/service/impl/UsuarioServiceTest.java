@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.core.env.Environment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,6 +29,9 @@ class UsuarioServiceTest {
 
     @Mock
     private IUserRepositoryImpl userRepositoryImpl;
+
+    @Mock
+    private Environment env;
 
 
     private UserDTO user;
@@ -72,6 +76,7 @@ class UsuarioServiceTest {
     void saveUser() {
         //given
         given(userRepositoryImpl.saveUser(user)).willReturn(user);
+        given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
         //when
         UserDTO userDTO = usuarioService.saveUser(user);
         //then

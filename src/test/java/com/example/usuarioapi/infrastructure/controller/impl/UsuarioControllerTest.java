@@ -1,31 +1,41 @@
 package com.example.usuarioapi.infrastructure.controller.impl;
 
+import com.example.usuarioapi.application.service.impl.UsuarioService;
 import com.example.usuarioapi.domain.model.dto.UserDTO;
-import com.example.usuarioapi.domain.model.repositories.IUserRepository;
-import org.junit.jupiter.api.MethodOrderer;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrint;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.hamcrest.CoreMatchers.is;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK)
+@AutoConfigureMockMvc(print = MockMvcPrint.NONE)
 class UsuarioControllerTest {
 
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UsuarioService usuarioService;
 
     @Autowired
-    private IUserRepository iUsuarioRepository;
+    private ObjectMapper objectMapper;
 
     @Test
     void consultarUsuarios() {
@@ -42,11 +52,24 @@ class UsuarioControllerTest {
                 .created(LocalDateTime.now())
                 .isactive(true)
                 .build();
-   
-        //when
-        ResponseEntity<UserDTO> respuesta = testRestTemplate.postForEntity("http://localhost:8080/saveUser", userDTO, UserDTO.class);
-        assertEquals(HttpStatus.CREATED, respuesta.getStatusCode());
+        String jsonUsuarioDTO = objectMapper.writeValueAsString(userDTO);
 
+        //when
+        ResultActions response = mockMvc.perform(post("/saveUser")
+                .accept(MediaType.APPLICATION_JSON)
+                .contentType(MediaType.APPLICATION_JSON)
+                .with(request -> {
+                            request.setContent(userDTO.toString().getBytes(StandardCharsets.UTF_8));
+                            return request;
+                        }
+
+                ));
+
+        //then
+        response.andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.name", is(userDTO.getName())))
+                .andExpect(jsonPath("$.email", is(userDTO.getEmail())));
 
     }
 
