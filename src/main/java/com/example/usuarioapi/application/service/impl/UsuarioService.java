@@ -2,8 +2,8 @@ package com.example.usuarioapi.application.service.impl;
 
 import com.example.usuarioapi.application.service.IUsuarioService;
 import com.example.usuarioapi.domain.model.dto.UserDTO;
+import com.example.usuarioapi.domain.model.repositories.IUserRepository;
 import com.example.usuarioapi.domain.model.repositories.PhoneRepository;
-import com.example.usuarioapi.domain.model.repositories.UserRepository;
 import com.example.usuarioapi.infrastructure.exceptions.GeneralException;
 import com.example.usuarioapi.utils.Validation;
 import lombok.RequiredArgsConstructor;
@@ -25,14 +25,15 @@ public class UsuarioService implements IUsuarioService {
     @Autowired
     private PhoneRepository phoneRepository;
     @Autowired
-    private UserRepository userRepository;
+    private IUserRepository iUserRepository;
 
     @Autowired
     private Environment env;
 
     @Override
     public List<UserDTO> consultarUsuarios() {
-        return userRepository.findAll();
+        log.info("Se consultan todos");
+        return iUserRepository.findAll();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class UsuarioService implements IUsuarioService {
             throw new GeneralException("Digite un correo valido");
 
         }
-        if (!Validation.isValidPassword(userDTO.getPassword(), env.getProperty("password.regex"))) {
+/*        if (!Validation.isValidPassword(userDTO.getPassword(), env.getProperty("password.regex"))) {
             log.error("Digite contraseña valida");
             throw new GeneralException("Error Validando contraseña, debe tener: Mínimo 6 caracteres: " +
                     "Al menos un carácter alfanumérico (letra o número). " +
@@ -58,13 +59,15 @@ public class UsuarioService implements IUsuarioService {
 
         }
 
+
+ */
         userDTO.getPhones().forEach(x -> {
 
             UUID idPhone = UUID.randomUUID();
             x.setId(String.valueOf(idPhone));
         });
 
-        userDTO = userRepository.saveUser(userDTO);
+        userDTO = iUserRepository.saveUser(userDTO);
         log.info("Se guarda exitoso el usuario");
         return userDTO;
     }
@@ -80,13 +83,13 @@ public class UsuarioService implements IUsuarioService {
             throw new GeneralException("Digite un correo valido");
 
         }
-
-        return userRepository.updateUser(userDTO);
+        log.info("Se actualiza");
+        return iUserRepository.updateUser(userDTO);
     }
 
     @Override
     public UserDTO disableUser(String id) {
-        return userRepository.disableUser(id);
+        return iUserRepository.disableUser(id);
     }
 
 

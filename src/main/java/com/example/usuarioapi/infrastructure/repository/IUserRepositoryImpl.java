@@ -2,10 +2,11 @@ package com.example.usuarioapi.infrastructure.repository;
 
 import com.example.usuarioapi.domain.model.User;
 import com.example.usuarioapi.domain.model.dto.UserDTO;
-import com.example.usuarioapi.domain.model.repositories.UserRepository;
+import com.example.usuarioapi.domain.model.repositories.IUserRepository;
 import com.example.usuarioapi.infrastructure.exceptions.DataAlreadyExistsException;
 import com.example.usuarioapi.infrastructure.exceptions.GeneralException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Repository;
 
@@ -17,13 +18,14 @@ import java.util.UUID;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements UserRepository {
+@Slf4j
+public class IUserRepositoryImpl implements IUserRepository {
 
 
     private final ModelMapper modelMapper;
 
 
-    private final IUsuarioRepository repository;
+    private final com.example.usuarioapi.infrastructure.repository.IUserRepository repository;
 
     @Override
     public List<UserDTO> findAll() {
@@ -35,7 +37,7 @@ public class UserRepositoryImpl implements UserRepository {
             modelMapper.map(x, userDTO);
             listUserDto.add(userDTO);
         });
-
+        log.info("Se consultan todos exitosamente");
 
         return listUserDto;
     }
@@ -60,6 +62,7 @@ public class UserRepositoryImpl implements UserRepository {
             throw new DataAlreadyExistsException("El correo electrónico ya está registrado.");
 
         }
+        log.info("Se Guarda exitosamente");
         return userDTO;
 
 
@@ -77,6 +80,8 @@ public class UserRepositoryImpl implements UserRepository {
             throw new GeneralException("el usuario no existe, por favor primero guarde el usuario");
         }
         modelMapper.map(usuario, userDTO);
+
+        log.info("Se Actualiza exitosamente");
         return userDTO;
     }
 
@@ -91,9 +96,10 @@ public class UserRepositoryImpl implements UserRepository {
             usuario.setModified(LocalDateTime.now());
             repository.save(usuario);
             modelMapper.map(usuario, userDTO);
+            log.info("Se cambia de estado exitosamente");
             return userDTO;
         } else {
-
+            log.error("Error Cambiando el estado");
             throw new GeneralException("el usuario no existe, por favor primero guarde el usuario");
         }
 

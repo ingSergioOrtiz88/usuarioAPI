@@ -4,7 +4,7 @@ import com.example.usuarioapi.domain.model.dto.UserDTO;
 
 import java.util.List;
 
-public interface UserRepository {
+public interface IUserRepository {
 
     List<UserDTO> findAll();
 
