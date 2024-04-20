@@ -76,10 +76,12 @@ public class UsuarioService implements IUsuarioService {
     public UserDTO updateUser(UserDTO userDTO) {
 
         if (userDTO.getName() == null) {
+            log.error(nombreObligatorio);
             throw new GeneralException(nombreObligatorio);
 
         }
         if (!Validation.validateEmail(userDTO.getEmail())) {
+            log.error(correoValido);
             throw new GeneralException(correoValido);
 
         }
@@ -90,7 +92,7 @@ public class UsuarioService implements IUsuarioService {
                     "Al menos un carácter especial (como $, @, !, %, *, ? o &).");
 
         }
-        log.info("Se actualiza");
+        log.info("Se actualiza el usuario");
         return iUserRepository.updateUser(userDTO);
     }
 

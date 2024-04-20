@@ -20,10 +20,7 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class UsuarioServiceTest {
@@ -69,7 +66,7 @@ class UsuarioServiceTest {
     }
 
     @Test
-    @DisplayName("Test para listar a los empleados")
+    @DisplayName("Test para listar a los usuarios")
     void consultarUsuarios() {
         given(userRepositoryImpl.findAll()).willReturn(listUser);
 
@@ -101,6 +98,7 @@ class UsuarioServiceTest {
         });
 
     }
+
     @Test
     @DisplayName("Test para validar Correo")
     void saveUserNotEmail() {
@@ -113,6 +111,7 @@ class UsuarioServiceTest {
         });
 
     }
+
     @Test
     @DisplayName("Test para validar Contraseña en el guardado")
     void saveUserNotPassword() {
@@ -126,6 +125,7 @@ class UsuarioServiceTest {
         });
 
     }
+
     @Test
     @DisplayName("Test para validar Contraseña en el actualizar")
     void updateUserNotPassword() {
@@ -154,5 +154,44 @@ class UsuarioServiceTest {
 
     }
 
+    @Test
+    @DisplayName("Test para actualizar Sin nombre")
+    void updateUserNotName() {
+
+        user.setName(null);
+        //when
+
+        assertThrows(GeneralException.class, () -> {
+            usuarioService.updateUser(user);
+        });
+
+    }
+
+    @Test
+    @DisplayName("Test para actualizar usuario correo Invalido")
+    void updateUserNotemail() {
+
+        user.setEmail("sdasd.com");
+        //when
+
+        assertThrows(GeneralException.class, () -> {
+            usuarioService.updateUser(user);
+        });
+
+    }
+
+    @Test
+    @DisplayName("Test para actualizar usuario contraseña Invalido")
+    void updateUserNotpassword() {
+
+        user.setPassword("sdasdas");
+        given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
+        //when
+
+        assertThrows(GeneralException.class, () -> {
+            usuarioService.updateUser(user);
+        });
+
+    }
 
 }
