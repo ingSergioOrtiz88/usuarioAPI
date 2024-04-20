@@ -17,11 +17,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 
 @DataJpaTest
-class IUserRepositoryImplTest {
+class IUsuarioRepositoryImplTest {
 
 
     @Autowired
-    private IUserRepository usuarioRepository;
+    private IUsuarioRepository usuarioRepository;
 
 
     private User user;
