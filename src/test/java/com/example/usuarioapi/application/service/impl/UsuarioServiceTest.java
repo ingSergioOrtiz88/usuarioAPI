@@ -15,7 +15,7 @@ import org.springframework.core.env.Environment;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,7 +40,6 @@ class UsuarioServiceTest {
 
     private UserDTO user;
     private List<UserDTO> listUser;
-    private PhoneDTO phone;
 
 
     @BeforeEach
@@ -57,13 +56,13 @@ class UsuarioServiceTest {
                 .isactive(true)
                 .build();
 
-        phone = PhoneDTO.builder()
+        PhoneDTO phone = PhoneDTO.builder()
                 .id(id2)
                 .citycode("324")
                 .number("435345")
                 .contrycode("57")
                 .build();
-        user.setPhones(Arrays.asList(phone));
+        user.setPhones(Collections.singletonList(phone));
         listUser = new ArrayList<>();
         listUser.add(user);
 
@@ -97,9 +96,7 @@ class UsuarioServiceTest {
         //given
         this.user.setName(null);
         //when
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.saveUser(user);
-        });
+        assertThrows(GeneralException.class, () -> usuarioService.saveUser(user));
 
     }
 
@@ -110,9 +107,7 @@ class UsuarioServiceTest {
         //given
         this.user.setEmail("234234.com");
         //when
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.saveUser(user);
-        });
+        assertThrows(GeneralException.class, () -> usuarioService.saveUser(user));
 
     }
 
@@ -124,9 +119,7 @@ class UsuarioServiceTest {
         this.user.setPassword("asdasd");
         given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
         //when
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.saveUser(user);
-        });
+        assertThrows(GeneralException.class, () -> usuarioService.saveUser(user));
 
     }
 
@@ -136,11 +129,11 @@ class UsuarioServiceTest {
 
         //given
         this.user.setPassword("asdasd");
+
         given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
         //when
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.updateUser(user);
-        });
+        assertThrows(GeneralException.class, () -> usuarioService.updateUser(user, user.getId())
+        );
 
     }
 
@@ -148,11 +141,11 @@ class UsuarioServiceTest {
     @DisplayName("Test para actualizar un usuario")
     void updateUser() {
 
-        given(userRepositoryImpl.updateUser(user)).willReturn(user);
+        given(userRepositoryImpl.updateUser(user, user.getId())).willReturn(user);
         given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
         user.setName("juan perezzzz");
         //when
-        UserDTO userDTO = usuarioService.updateUser(user);
+        UserDTO userDTO = usuarioService.updateUser(user, user.getId());
         //then
         assertThat(userDTO.getName()).isEqualTo("juan perezzzz");
 
@@ -165,9 +158,9 @@ class UsuarioServiceTest {
         user.setName(null);
         //when
 
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.updateUser(user);
-        });
+        assertThrows(GeneralException.class, () ->
+                usuarioService.updateUser(user, user.getId())
+        );
 
     }
 
@@ -178,9 +171,9 @@ class UsuarioServiceTest {
         user.setEmail("sdasd.com");
         //when
 
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.updateUser(user);
-        });
+        assertThrows(GeneralException.class, () ->
+                usuarioService.updateUser(user, user.getId())
+        );
 
     }
 
@@ -192,9 +185,7 @@ class UsuarioServiceTest {
         given(env.getProperty("password.regex")).willReturn("^(?=.*[a-zA-Z0-9])(?=.*[$@$!%*?&]).{6,}$");
         //when
 
-        assertThrows(GeneralException.class, () -> {
-            usuarioService.updateUser(user);
-        });
+        assertThrows(GeneralException.class, () -> usuarioService.updateUser(user, user.getId()));
 
     }
 

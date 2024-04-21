@@ -12,9 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
-@RequestMapping("/")
+@RequestMapping("/api")
 @CrossOrigin(origins = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE})
 
 public class UsuarioController implements IUsuarioController {
@@ -33,7 +34,7 @@ public class UsuarioController implements IUsuarioController {
     @ApiOperation(value = "Consultar Usuarios Activos", notes = "metodo que consulta usuarios activos")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. El recurso se obtiene correctamente", response = UserDTO.class),
-            @ApiResponse(code = 400, message = "Bad Request.Esta vez cambiamos el tipo de dato de la respuesta (String)", response = String.class),
+            @ApiResponse(code = 400, message = "Bad Request. por favor valide la informacion", response = String.class),
             @ApiResponse(code = 500, message = "Error inesperado del sistema")})
     public ResponseEntity<List<UserDTO>> consultarUsuarios() {
 
@@ -44,11 +45,11 @@ public class UsuarioController implements IUsuarioController {
 
 
     @Override
-    @PostMapping("/saveUser")
+    @PostMapping("/user")
     @ApiOperation(value = "Guardar Usuario", notes = "metodo guarda un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. El recurso se obtiene correctamente", response = UserDTO.class),
-            @ApiResponse(code = 400, message = "Bad Request.Esta vez cambiamos el tipo de dato de la respuesta (String)", response = String.class),
+            @ApiResponse(code = 400, message = "Bad Request. por favor valide la informacion", response = String.class),
             @ApiResponse(code = 409, message = "Data enviada ya existe en base de datos", response = String.class),
             @ApiResponse(code = 500, message = "Error inesperado del sistema")})
     public ResponseEntity<UserDTO> saveUser(@ApiParam(type = "String", value =
@@ -70,15 +71,31 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
-    @PutMapping("/updateUser")
+    @PutMapping("/user/{idUser}")
     @ApiOperation(value = "Actualizar Usuario", notes = "metodo que actualiza un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. El recurso se obtiene correctamente", response = UserDTO.class),
-            @ApiResponse(code = 400, message = "Bad Request.Esta vez cambiamos el tipo de dato de la respuesta (String)", response = String.class),
+            @ApiResponse(code = 400, message = "Bad Request. por favor valide la informacion", response = String.class),
             @ApiResponse(code = 409, message = "Data enviada ya existe en base de datos", response = String.class),
             @ApiResponse(code = 500, message = "Error inesperado del sistema")})
-    public ResponseEntity<UserDTO> updateUser(UserDTO json) {
-        return ResponseEntity.ok(service.updateUser(json));
+    public ResponseEntity<UserDTO> updateUser(@ApiParam(type = "String", value =
+            "el JSON concepto debe contar con la siguiente estructura:" +
+                    "{\n" +
+                    "    \"name\": \"Juan Rodriguez\",\n" +
+                    "    \"email\": \"juan@rodriguez.org\",\n" +
+                    "    \"password\": \"hunter2\",\n" +
+                    "    \"phones\": [\n" +
+                    "        {\n" +
+                    "            \"number\": \"1234567\",\n" +
+                    "            \"citycode\": \"1\",\n" +
+                    "            \"contrycode\": \"57\"\n" +
+                    "        }\n" +
+                    "    ]\n" +
+                    "}"
+            , required = true) @RequestBody UserDTO json, @ApiParam(
+            value = "idUser", example = "9fc6956c-3555-43cb-818e-ede5e7568634", required = true,
+            type = "String") @PathVariable("idUser") UUID idUser) {
+        return ResponseEntity.ok(service.updateUser(json,idUser));
     }
 
     @Override
@@ -86,12 +103,12 @@ public class UsuarioController implements IUsuarioController {
     @ApiOperation(value = "Deshabilitar Usuario", notes = "metodo que deshabilita un usuario")
     @ApiResponses(value = {
             @ApiResponse(code = 200, message = "OK. El recurso se obtiene correctamente", response = UserDTO.class),
-            @ApiResponse(code = 400, message = "Bad Request.Esta vez cambiamos el tipo de dato de la respuesta (String)", response = String.class),
+            @ApiResponse(code = 400, message = "Bad Request. por favor valide la informacion", response = String.class),
             @ApiResponse(code = 409, message = "Data enviada ya existe en base de datos", response = String.class),
             @ApiResponse(code = 500, message = "Error inesperado del sistema")})
     public ResponseEntity<UserDTO> disableUsuer(@ApiParam(
             value = "idUser", example = "9fc6956c-3555-43cb-818e-ede5e7568634", required = true,
-            type = "String") @PathVariable("idUser") String idUser) {
+            type = "UUID") @PathVariable("idUser") UUID idUser) {
         return ResponseEntity.ok(service.disableUser(idUser));
     }
 }

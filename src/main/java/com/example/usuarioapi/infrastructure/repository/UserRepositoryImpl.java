@@ -57,16 +57,7 @@ public class UserRepositoryImpl implements IUserRepository {
                 usuario.setCreated(LocalDateTime.now());
                 usuario.setIsactive(true);
                 usuario.setLastLogin(LocalDateTime.now());
-                repository.save(usuario);
-                List<Phone> listPhone = usuario.getPhones();
-                List<Phone> listPhonenew = new ArrayList<>();
-
-                listPhone.forEach(x -> {
-                    x.setUsuario(usuario);
-                    iPhoneRepository.save(x);
-                    listPhonenew.add(x);
-                });
-                usuario.setPhones(listPhonenew);
+                saveLogic(usuario);
 
                 modelMapper.map(usuario, userDTO);
 
@@ -84,23 +75,26 @@ public class UserRepositoryImpl implements IUserRepository {
 
     }
 
+    private void saveLogic(User usuario) {
+        repository.save(usuario);
+        List<Phone> listPhone = usuario.getPhones();
+        List<Phone> listPhonenew = new ArrayList<>();
+
+        listPhone.forEach(x -> {
+            x.setUsuario(usuario);
+            iPhoneRepository.save(x);
+            listPhonenew.add(x);
+        });
+        usuario.setPhones(listPhonenew);
+    }
+
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
+    public UserDTO updateUser(UserDTO userDTO, UUID idUser) {
         User usuario = new User();
         modelMapper.map(userDTO, usuario);
-        if (repository.findById(usuario.getId()).isPresent()) {
+        if (repository.findById(idUser).isPresent()) {
             usuario.setModified(LocalDateTime.now());
-            repository.save(usuario);
-
-            List<Phone> listPhone = usuario.getPhones();
-            List<Phone> listPhonenew = new ArrayList<>();
-
-            listPhone.forEach(x -> {
-                x.setUsuario(usuario);
-                iPhoneRepository.save(x);
-                listPhonenew.add(x);
-            });
-            usuario.setPhones(listPhonenew);
+            saveLogic(usuario);
 
         } else {
 
@@ -113,10 +107,10 @@ public class UserRepositoryImpl implements IUserRepository {
     }
 
     @Override
-    public UserDTO disableUser(String id) {
+    public UserDTO disableUser(UUID id) {
         UserDTO userDTO = new UserDTO();
 
-        Optional<User> userOptional = repository.findById(UUID.fromString(id));
+        Optional<User> userOptional = repository.findById(id);
         if (userOptional.isPresent()) {
             User usuario = userOptional.get();
             usuario.setIsactive(false);

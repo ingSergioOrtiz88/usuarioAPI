@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface IUsuarioController {
 
@@ -14,9 +15,9 @@ public interface IUsuarioController {
 
     ResponseEntity<UserDTO> saveUser(@RequestBody UserDTO json);
 
-    ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO json);
+    ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO json, @PathVariable UUID idUser);
 
-    ResponseEntity<UserDTO> disableUsuer(@PathVariable String id);
+    ResponseEntity<UserDTO> disableUsuer(@PathVariable UUID id);
 
 
 }

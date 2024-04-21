@@ -10,6 +10,10 @@ import com.example.usuarioapi.infrastructure.repository.IRolRepositorioRepositor
 import com.example.usuarioapi.infrastructure.repository.IUsuarioRepository;
 import com.example.usuarioapi.infrastructure.security.JWTAuthResonseDTO;
 import com.example.usuarioapi.infrastructure.security.JwtTokenProvider;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +35,7 @@ import java.util.Collections;
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
-public class AuthControlador {
+public class AuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -52,8 +56,20 @@ public class AuthControlador {
     private ILoginService iLoginService;
 
 
-    @PostMapping("/iniciarSesion")
-    public ResponseEntity<JWTAuthResonseDTO> authenticateUser(@RequestBody LoginDTO loginDTO) {
+    @PostMapping("/login")
+    @ApiOperation(value = "Login Usuario", notes = "metodo que inicia sesion")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK. El recurso se obtiene correctamente", response = JWTAuthResonseDTO.class),
+            @ApiResponse(code = 400, message = "Bad Request. por favor valide", response = String.class),
+            @ApiResponse(code = 409, message = "Data enviada ya existe en base de datos", response = String.class),
+            @ApiResponse(code = 500, message = "Error inesperado del sistema")})
+    public ResponseEntity<JWTAuthResonseDTO> authenticateUser(@ApiParam(type = "LoginDTO", value =
+            "el JSON concepto debe contar con la siguiente estructura:" +
+                    "{\n" +
+                    "    \"usernameOrEmail\": \"admin\",\n" +
+                    "    \"password\": \"admin\"\n" +
+                    "}"
+            , required = true) @RequestBody LoginDTO loginDTO) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsernameOrEmail(), loginDTO.getPassword()));
 
 
@@ -93,5 +109,7 @@ public class AuthControlador {
         }
 
     }
+
+
 }
 

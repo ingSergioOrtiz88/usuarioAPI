@@ -61,14 +61,13 @@ public class UsuarioService implements IUsuarioService {
         }
 
 
-
         userDTO = iUserRepository.saveUser(userDTO);
         log.info("Se guarda exitoso el usuario");
         return userDTO;
     }
 
     @Override
-    public UserDTO updateUser(UserDTO userDTO) {
+    public UserDTO updateUser(UserDTO userDTO, UUID idUser) {
 
         if (userDTO.getName() == null) {
             log.error(nombreObligatorio);
@@ -88,12 +87,12 @@ public class UsuarioService implements IUsuarioService {
 
         }
         log.info("Se actualiza el usuario");
-        return iUserRepository.updateUser(userDTO);
+        return iUserRepository.updateUser(userDTO, idUser);
     }
 
 
     @Override
-    public UserDTO disableUser(String id) {
+    public UserDTO disableUser(UUID id) {
         return iUserRepository.disableUser(id);
     }
 
