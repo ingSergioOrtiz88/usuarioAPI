@@ -2,9 +2,9 @@ package com.example.usuarioapi.domain.model.dto;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,7 +15,7 @@ import java.util.List;
 public class UserDTO {
 
     private String name;
-    private String id;
+    private UUID id;
     private String email;
     private String password;
 
@@ -23,5 +23,8 @@ public class UserDTO {
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
     private boolean isactive;
+
     private List<PhoneDTO> phones;
+
+
 }

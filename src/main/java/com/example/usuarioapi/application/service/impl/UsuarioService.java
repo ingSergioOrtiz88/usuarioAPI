@@ -61,11 +61,6 @@ public class UsuarioService implements IUsuarioService {
         }
 
 
-        userDTO.getPhones().forEach(x -> {
-
-            UUID idPhone = UUID.randomUUID();
-            x.setId(String.valueOf(idPhone));
-        });
 
         userDTO = iUserRepository.saveUser(userDTO);
         log.info("Se guarda exitoso el usuario");

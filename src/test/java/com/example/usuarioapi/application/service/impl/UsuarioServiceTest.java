@@ -17,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertThrows;
@@ -44,8 +45,11 @@ class UsuarioServiceTest {
 
     @BeforeEach
     void setup() {
+        UUID id1 = UUID.randomUUID();
+        UUID id2 = UUID.randomUUID();
+
         user = UserDTO.builder()
-                .id("123e4567-e89b-12d3-a456-426655440000")
+                .id(id1)
                 .email("correo@hot.com")
                 .password("234as234!")
                 .name("Sergio")
@@ -54,7 +58,7 @@ class UsuarioServiceTest {
                 .build();
 
         phone = PhoneDTO.builder()
-                .id("123e4567-e89b-12d3-a456-426655440555")
+                .id(id2)
                 .citycode("324")
                 .number("435345")
                 .contrycode("57")

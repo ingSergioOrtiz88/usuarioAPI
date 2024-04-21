@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,12 +27,16 @@ class IUsuarioRepositoryImplTest {
 
     private User user;
     private List<User> listUser;
+    private List<Phone> lisPhone;
     private Phone phone;
 
     @BeforeEach
     void setup() {
+        UUID idUsuario = UUID.randomUUID();
+        UUID idUsuario2 = UUID.randomUUID();
+
         user = User.builder()
-                .id("123e4567-e89b-12d3-a456-426655440000")
+                .id(idUsuario)
                 .email("correo@hot.com")
                 .password("234234!")
                 .name("Sergio")
@@ -40,12 +45,17 @@ class IUsuarioRepositoryImplTest {
                 .build();
 
         phone = Phone.builder()
-                .id("123e4567-e89b-12d3-a456-426655440555")
+                .id(idUsuario2)
                 .citycode("324")
                 .contrycode("57")
+                .number("43534545")
                 .build();
         listUser = new ArrayList<>();
+        lisPhone = new ArrayList<>();
+        lisPhone.add(phone);
         listUser.add(user);
+        user.setPhones(lisPhone);
+
 
     }
 
@@ -54,8 +64,10 @@ class IUsuarioRepositoryImplTest {
     @DisplayName("Test para guardar un usuario")
     void saveUser() {
         //given
+        UUID idUsuario = UUID.randomUUID();
+
         User userTest = User.builder()
-                .id("123e4567-e89b-12d3-a456-426655440000")
+                .id(idUsuario)
                 .email("correo@hot.com")
                 .password("234234!")
                 .name("Sergio")
@@ -74,14 +86,18 @@ class IUsuarioRepositoryImplTest {
     @DisplayName("Test para consultar todos los usuarios")
     void findAll() {
         //given
+        UUID idUsuario = UUID.randomUUID();
+
         User userTest = User.builder()
-                .id("123e4567-e89b-12d3-a456-426655440000")
-                .email("correo@hot.com")
+                .id(idUsuario)
+                .email("correoaaa@hot.com")
                 .password("234234!")
                 .name("Sergio")
                 .isactive(true)
                 .created(LocalDateTime.now())
                 .build();
+        userTest.setPhones(lisPhone);
+        user.setPhones(lisPhone);
         usuarioRepository.save(userTest);
         usuarioRepository.save(user);
         //when
@@ -94,10 +110,20 @@ class IUsuarioRepositoryImplTest {
     @Test
     @DisplayName("Test para actualizar un usuario")
     void updateUser() {
-        usuarioRepository.save(user);
+
+        User userTest = User.builder()
+                .email("correo@hot.com")
+                .password("234234!")
+                .name("Sergio")
+                .created(LocalDateTime.now())
+                .isactive(true)
+                .build();
+        usuarioRepository.save(userTest);
         User userSaved = null;
-        //given(usuarioRepository.findById(user.getId())).willReturn(Optional.ofNullable(user));
-        Optional<User> userOptional = usuarioRepository.findById(user.getId());
+        // given(usuarioRepository.findById(user.getId())).willReturn(Optional.ofNullable(user));
+
+        Optional<User> userOptional = usuarioRepository.findById(userTest.getId());
+
         if (userOptional.isPresent()) {
             userSaved = userOptional.get();
             userSaved.setEmail("segundo@correo.com");

@@ -14,8 +14,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -47,8 +47,10 @@ class UsuarioControllerTest {
     @Test
     void saveUser() throws Exception {
         //given
+             UUID idUsuario = UUID.randomUUID();
+
         UserDTO userDTO = UserDTO.builder()
-                .id("123e4567-e89b-12d3-a456-426655440000")
+                .id(idUsuario)
                 .email("correo@hot.com")
                 .password("234234!")
                 .name("Sergio")
