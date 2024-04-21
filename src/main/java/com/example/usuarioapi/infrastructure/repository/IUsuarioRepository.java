@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Repository
@@ -15,6 +16,12 @@ public interface IUsuarioRepository extends JpaRepository<User, UUID> {
 
 
     List<User> findAllByIsactiveIsTrue();
+
+    Optional<User> findByUsernameOrEmail(String name, String email);
+
+    Boolean existsByUsername(String username);
+
+    Boolean existsByEmail(String email);
 
 
 }

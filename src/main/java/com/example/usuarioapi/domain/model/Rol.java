@@ -17,28 +17,19 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table(name = "phone")
+@Table(name = "roles")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Phone  implements Serializable {
+public class Rol implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @Column(name = "id", unique = true)
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
+    @Column(name = "name")
+    private String name;
 
-    @Column(name = "number", nullable = false)
-    private String number;
-
-    @Column(name = "citycode")
-    private String citycode;
-
-    @Column(name = "countrycode")
-    private String contrycode;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private User usuario;
 }

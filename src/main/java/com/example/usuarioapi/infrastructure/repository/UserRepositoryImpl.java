@@ -56,6 +56,7 @@ public class UserRepositoryImpl implements IUserRepository {
 
                 usuario.setCreated(LocalDateTime.now());
                 usuario.setIsactive(true);
+                usuario.setLastLogin(LocalDateTime.now());
                 repository.save(usuario);
                 List<Phone> listPhone = usuario.getPhones();
                 List<Phone> listPhonenew = new ArrayList<>();

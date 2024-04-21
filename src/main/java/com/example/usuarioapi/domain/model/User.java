@@ -12,7 +12,9 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Data
@@ -28,7 +30,7 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(generator = "UUID")
     @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
-    @Column(name = "id", unique = true,nullable = false)
+    @Column(name = "id", unique = true, nullable = false)
     private UUID id;
 
     @Column(name = "name", length = 50, nullable = false)
@@ -52,8 +54,16 @@ public class User implements Serializable {
     @Column(name = "isactive", columnDefinition = "boolean default true")
     private boolean isactive;
 
+    @Column(name = "username")
+    private String username;
+
+
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Phone> phones;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuarios_roles", joinColumns = @JoinColumn(name = "usuario_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "rol_id", referencedColumnName = "id"))
+    private Set<Rol> roles = new HashSet<>();
 
 }
