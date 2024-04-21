@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "e07a6cf4-405d-4b3c-ab24-299e8d82d459",
+		"name": "Usuario API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31210011"
+	},
+	"item": [
+		{
+			"name": "login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usernameOrEmail\": \"admin\",\r\n    \"password\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXJnaW9AdGVzdC5jb20iLCJpYXQiOjE3MTM2Nzc1MjcsImV4cCI6MTcxNDI4MjMyN30.3WA2GbQq5HHp6hjKGcBUW_SY8eEyOeWxMelaKJDk-ZsvUJtlDkXKECNQ_b60hjGaVUTiZjHEQ_iPUZ7MDoA1mQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Juan Rodriguez\",\r\n    \"email\": \"juans@rodriguez.org\",\r\n    \"password\": \"hunter2!\",\r\n    \"created\": \"2024-04-21T00:34:23.556724\",\r\n    \"modified\": null,\r\n    \"lastLogin\": \"2024-04-21T00:34:23.556724\",\r\n    \"isactive\": true,\r\n    \"phones\": [\r\n        {\r\n           \r\n            \"number\": \"1234567\",\r\n            \"citycode\": \"1\",\r\n            \"contrycode\": \"57\",\r\n            \"user\": null\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "find  all user actives",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXJnaW9AdGVzdC5jb20iLCJpYXQiOjE3MTM2Nzc1MjcsImV4cCI6MTcxNDI4MjMyN30.3WA2GbQq5HHp6hjKGcBUW_SY8eEyOeWxMelaKJDk-ZsvUJtlDkXKECNQ_b60hjGaVUTiZjHEQ_iPUZ7MDoA1mQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/findAll",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"findAll"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXJnaW9AdGVzdC5jb20iLCJpYXQiOjE3MTM2Nzc1MjcsImV4cCI6MTcxNDI4MjMyN30.3WA2GbQq5HHp6hjKGcBUW_SY8eEyOeWxMelaKJDk-ZsvUJtlDkXKECNQ_b60hjGaVUTiZjHEQ_iPUZ7MDoA1mQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " {\r\n        \"name\": \"Juan Rodriguez\",\r\n        \"id\": \"62128739-a7b8-4cad-97e7-db92353434a4\",\r\n        \"email\": \"juans@rodriguez.org\",\r\n        \"password\": \"hunter2!\",\r\n        \"token\": null,\r\n        \"created\": \"2024-04-21T12:07:43.784386\",\r\n        \"modified\": \"2024-04-21T12:08:55.974213\",\r\n        \"lastLogin\": \"2024-04-21T12:07:43.784386\",\r\n        \"isactive\": true,\r\n        \"phones\": [\r\n            {\r\n                \"id\": \"9e2618df-8a52-4e07-9268-6a4b0fffcc2f\",\r\n                \"number\": \"55555\",\r\n                \"citycode\": \"1\",\r\n                \"contrycode\": \"57\",\r\n                \"user\": null\r\n            }\r\n        ]\r\n    }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/user/62128739-a7b8-4cad-97e7-db92353434a4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"user",
+						"62128739-a7b8-4cad-97e7-db92353434a4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "disable user",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJzZXJnaW9AdGVzdC5jb20iLCJpYXQiOjE3MTM2Nzc1MjcsImV4cCI6MTcxNDI4MjMyN30.3WA2GbQq5HHp6hjKGcBUW_SY8eEyOeWxMelaKJDk-ZsvUJtlDkXKECNQ_b60hjGaVUTiZjHEQ_iPUZ7MDoA1mQ",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/disableUsuer/f511c7a5-0979-4177-af0e-9bb82a41e04a",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"disableUsuer",
+						"f511c7a5-0979-4177-af0e-9bb82a41e04a"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
