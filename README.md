@@ -2,12 +2,14 @@
 Esta aplicación fue hecha bajo alguna de las siguientes tecnologías arquitectura hexagonal, java 11 pruebas unitarias con Junit5 y mockito, a demás de todas las tecnologías solicitadas
 la documentación en Swagger, seguridad bearer token con JWT y se utilizó una base de datos H2 la cual inicia sus servicios al momento de levantar el servidor
 y ejecuta los scripts que se encuentran en la carpeta resources, se ejecuta el script “schema.sql” el cual se encarga de generar
-las tablas y también se ejecuta el script “data.sql”. Adjunto al correo enviado se encontrará la colección de peticiones Postman para realizar las pruebas.
+las tablas y también se ejecuta el script “data.sql”. Adjunto al correo enviado se encontrará la colección de peticiones Postman para realizar las pruebas, el código del proyecto se encuentra en :
+https://github.com/ingSergioOrtiz88/usuarioAPI.git
 
-En este ejercicio se crea un primer usuario con nombre “sergio”,  username “admin” y password “admin”. Este usuario es el unico que contiene el Rol administrador ROLE_ADMIN
+En este ejercicio se crea un primer usuario con nombre “sergio”,  username “admin” y password “admin”. Este usuario contiene el Rol administrador ROLE_ADMIN
 y es el encargado de generar la primera carga. Para poder realizar la primera carga se debe levantar el aplicativo que corre por el puerto 8080.
 Una vez el servidor despliegue el aplicativo se debe ingresar al auth de autenticación que se encuentra en:
-http://localhost:8080/api/auth/login es un metodo POST y recibe el siguiente JSON en el body
+http://localhost:8080/api/auth/login 
+es un metodo POST y recibe el siguiente JSON en el body
 {
 "usernameOrEmail": "admin",
 "password": "admin"
@@ -38,3 +40,13 @@ spring.datasource.username=sa
 spring.datasource.password=admin
 spring.h2.console.enabled=true
 spring.jpa.defer-datasource-initialization=true
+
+
+
+
+
+
+
+
+El aplicativo genero el siguiente diagrama de clases donde relacionamos el usuario con sus teléfonos y sus roles. Solo el usuario sergio que se genera con los scripts tiene asignado el rol
+ 
