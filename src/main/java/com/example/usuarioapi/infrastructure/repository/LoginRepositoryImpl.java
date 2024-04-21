@@ -23,11 +23,13 @@ public class LoginRepositoryImpl implements ILoginRepository {
     private IUsuarioRepository usuarioRepositorio;
 
     @Override
-    public void updateLoginDate(LoginDTO loginDTO) {
+    public void updateLoginDate(LoginDTO loginDTO, String token) {
 
         User usuario = usuarioRepositorio.findByUsernameOrEmail(loginDTO.getUsernameOrEmail(), loginDTO.getUsernameOrEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con ese username o email : " + loginDTO.getUsernameOrEmail()));
         usuario.setLastLogin(LocalDateTime.now());
+        usuario.setToken(token);
+        usuario.setModified(LocalDateTime.now());
         usuarioRepositorio.save(usuario);
 
 

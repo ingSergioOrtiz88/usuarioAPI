@@ -4,5 +4,5 @@ import com.example.usuarioapi.domain.model.dto.LoginDTO;
 
 public interface ILoginRepository {
 
-    void updateLoginDate(LoginDTO loginDTO);
+    void updateLoginDate(LoginDTO loginDTO,String token);
 }

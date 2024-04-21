@@ -15,6 +15,7 @@ CREATE TABLE usuario
     created datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modified datetime,
     last_login datetime,
+    token VARCHAR(65535),
     username  VARCHAR(50),
     isactive bit default true,
     UNIQUE (email)

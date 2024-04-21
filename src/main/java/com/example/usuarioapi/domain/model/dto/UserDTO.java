@@ -18,6 +18,7 @@ public class UserDTO {
     private UUID id;
     private String email;
     private String password;
+    private String token;
 
     private LocalDateTime created;
     private LocalDateTime modified;

@@ -61,7 +61,7 @@ public class AuthControlador {
 
         //obtenemos el token del jwtTokenProvider
         String token = jwtTokenProvider.generarToken(authentication);
-        iLoginService.updateLoginDate(loginDTO);
+        iLoginService.updateLoginDate(loginDTO, token);
         return ResponseEntity.ok(new JWTAuthResonseDTO(token));
     }
 

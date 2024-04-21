@@ -18,8 +18,8 @@ public class Loginimpl implements ILoginService {
     private ILoginRepository loginRepository;
 
     @Override
-    public void updateLoginDate(LoginDTO loginDTO) {
-        loginRepository.updateLoginDate(loginDTO);
+    public void updateLoginDate(LoginDTO loginDTO, String token) {
+        loginRepository.updateLoginDate(loginDTO, token);
 
     }
 }

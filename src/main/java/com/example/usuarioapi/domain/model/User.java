@@ -57,6 +57,9 @@ public class User implements Serializable {
     @Column(name = "username")
     private String username;
 
+    @Column(name = "token")
+    private String token;
+
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
