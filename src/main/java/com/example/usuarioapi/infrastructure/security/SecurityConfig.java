@@ -1,5 +1,6 @@
 package com.example.usuarioapi.infrastructure.security;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests().antMatchers(HttpMethod.GET, "/api/**").permitAll()
                 .antMatchers("/h2-console/**").permitAll()
                 .antMatchers("/v2/api-docs").permitAll()
-                .antMatchers("/swagger-ui/**").permitAll()
+                .antMatchers(HttpMethod.GET, "/swagger-ui.html").permitAll()
                 .antMatchers("/api/auth/**").permitAll()
                 .anyRequest()
                 .authenticated();

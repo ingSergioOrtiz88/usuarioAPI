@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @RequiredArgsConstructor
 
-public class Loginimpl implements ILoginService {
+public class LoginImpl implements ILoginService {
 
     @Autowired
     private ILoginRepository loginRepository;

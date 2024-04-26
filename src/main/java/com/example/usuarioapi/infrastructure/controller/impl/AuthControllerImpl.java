@@ -1,11 +1,8 @@
-package com.example.usuarioapi.infrastructure.controller;
+package com.example.usuarioapi.infrastructure.controller.impl;
 
 import com.example.usuarioapi.application.service.ILoginService;
-import com.example.usuarioapi.domain.model.Rol;
-import com.example.usuarioapi.domain.model.User;
 import com.example.usuarioapi.domain.model.dto.LoginDTO;
-import com.example.usuarioapi.domain.model.dto.RegistroDTO;
-import com.example.usuarioapi.infrastructure.exceptions.GeneralException;
+import com.example.usuarioapi.infrastructure.controller.IAuthController;
 import com.example.usuarioapi.infrastructure.repository.IRolRepositorioRepository;
 import com.example.usuarioapi.infrastructure.repository.IUsuarioRepository;
 import com.example.usuarioapi.infrastructure.security.JWTAuthResonseDTO;
@@ -16,7 +13,6 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,14 +24,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDateTime;
-import java.util.Collections;
-
 
 @RestController
 @RequestMapping("/api/auth")
 @Slf4j
-public class AuthController {
+public class AuthControllerImpl implements IAuthController {
 
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -79,35 +72,6 @@ public class AuthController {
         String token = jwtTokenProvider.generarToken(authentication);
         iLoginService.updateLoginDate(loginDTO, token);
         return ResponseEntity.ok(new JWTAuthResonseDTO(token));
-    }
-
-    @PostMapping("/registrar")
-    public ResponseEntity<?> registrarUsuario(@RequestBody RegistroDTO registroDTO) {
-        try {
-            if (usuarioRepositorio.existsByUsername(registroDTO.getUsername())) {
-                return new ResponseEntity<>("Ese nombre de usuario ya existe", HttpStatus.BAD_REQUEST);
-            }
-
-            if (usuarioRepositorio.existsByEmail(registroDTO.getEmail())) {
-                return new ResponseEntity<>("Ese email de usuario ya existe", HttpStatus.BAD_REQUEST);
-            }
-
-            User usuario = new User();
-            usuario.setName(registroDTO.getNombre());
-            usuario.setUsername(registroDTO.getUsername());
-            usuario.setEmail(registroDTO.getEmail());
-            usuario.setPassword(passwordEncoder.encode(registroDTO.getPassword()));
-
-            Rol roles = IRolRepositorioRepository.findByName("ROLE_ADMIN");
-            usuario.setRoles(Collections.singleton(roles));
-            usuario.setCreated(LocalDateTime.now());
-            usuarioRepositorio.save(usuario);
-            return new ResponseEntity<>("Usuario registrado exitosamente", HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new GeneralException("Erro Guardando un nuevo usuario");
-        }
-
     }
 
 
